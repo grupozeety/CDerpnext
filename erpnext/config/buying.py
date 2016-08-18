@@ -9,6 +9,12 @@ def get_data():
 			"items": [
 				{
 					"type": "doctype",
+					"name": "Proyectar",
+					"label": _("Plan de Adquisiciones"),
+					"description": _("Plan de adquisiciones."),
+				},
+				{
+					"type": "doctype",
 					"name": "Material Request",
 					"description": _("Request for purchase."),
 				},
