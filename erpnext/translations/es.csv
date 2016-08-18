@@ -546,7 +546,7 @@ apps/erpnext/erpnext/stock/report/itemwise_recommended_reorder_level/itemwise_re
 apps/erpnext/erpnext/accounts/doctype/payment_reconciliation/payment_reconciliation.py +141,{0}: {1} not found in Invoice Details table,{0}: {1} no se encontró en la tabla de Detalles de factura
 DocType: Company,Round Off Cost Center,Centro de costos por defecto (redondeo)
 apps/erpnext/erpnext/selling/doctype/sales_order/sales_order.py +202,Maintenance Visit {0} must be cancelled before cancelling this Sales Order,La visita de mantenimiento {0} debe ser cancelada antes de cancelar la orden de ventas
-DocType: Material Request,Material Transfer,Transferencia de material
+DocType: Material Request,Material Transfer,Traslado de material
 apps/erpnext/erpnext/accounts/page/financial_analytics/financial_analytics.js +56,Opening (Dr),Apertura (Deb)
 apps/erpnext/erpnext/controllers/sales_and_purchase_return.py +39,Posting timestamp must be after {0},Fecha y hora de contabilización deberá ser posterior a {0}
 DocType: Landed Cost Taxes and Charges,Landed Cost Taxes and Charges,"Impuestos, cargos y costos de destino estimados"
@@ -1383,7 +1383,7 @@ apps/erpnext/erpnext/public/js/pos/pos.js +155,Please select {0} first.,"Por fav
 apps/erpnext/erpnext/public/js/templates/contact_list.html +2,New Contact,Nuevo contacto
 DocType: Territory,Parent Territory,Territorio principal
 DocType: Quality Inspection Reading,Reading 2,Lectura 2
-DocType: Stock Entry,Material Receipt,Recepción de materiales
+DocType: Stock Entry,Material Receipt,Entrada de material
 apps/erpnext/erpnext/public/js/setup_wizard.js +268,Products,Productos
 apps/erpnext/erpnext/accounts/doctype/gl_entry/gl_entry.py +48,Party Type and Party is required for Receivable / Payable account {0},El tipo de entidad y tercero/s son requeridos para las cuentas de cobrar/pagar {0}
 DocType: Item,"If this item has variants, then it cannot be selected in sales orders etc.","Si este producto tiene variantes, entonces no podrá ser seleccionado en los pedidos de venta, etc."
@@ -2476,7 +2476,7 @@ DocType: Sales Invoice Item,Delivered Qty,Cantidad entregada
 apps/erpnext/erpnext/stock/doctype/warehouse/warehouse.py +63,Warehouse {0}: Company is mandatory,Almacén {0}: El nombre de la compañia es obligatoria
 ,Payment Period Based On Invoice Date,Periodos de pago según facturas
 apps/erpnext/erpnext/shopping_cart/doctype/shopping_cart_settings/shopping_cart_settings.py +50,Missing Currency Exchange Rates for {0},Se requiere la tasa de cambio para {0}
-DocType: Journal Entry,Stock Entry,Entradas de inventario
+DocType: Journal Entry,Stock Entry,Movimientos de inventario
 DocType: Account,Payable,Pagadero
 apps/erpnext/erpnext/shopping_cart/cart.py +330,Debtors ({0}),Deudores ({0})
 DocType: Project,Margin,Margen
@@ -3173,7 +3173,7 @@ apps/erpnext/erpnext/selling/doctype/sales_order/sales_order.py +262,Row #{0}: N
 DocType: Accounts Settings,Role that is allowed to submit transactions that exceed credit limits set.,Rol autorizado para validar las transacciones que excedan los límites de crédito establecidos.
 DocType: Sales Invoice,Supplier Reference,Referencia de proveedor
 DocType: Production Planning Tool,"If checked, BOM for sub-assembly items will be considered for getting raw materials. Otherwise, all sub-assembly items will be treated as a raw material.","Si se selecciona, la Solicitud de Materiales para los elementos de sub-ensamble será considerado para conseguir materias primas. De lo contrario , todos los elementos de sub-ensamble serán tratados como materia prima ."
-DocType: Material Request,Material Issue,Expedición de material
+DocType: Material Request,Material Issue,Salida de material
 DocType: Hub Settings,Seller Description,Descripción del vendedor
 DocType: Employee Education,Qualification,Calificación
 DocType: Item Price,Item Price,Precio de productos
