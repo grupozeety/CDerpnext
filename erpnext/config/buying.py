@@ -53,6 +53,11 @@ def get_data():
 					"name": "Address",
 					"description": _("All Addresses."),
 				},
+				{
+                   	"type": "doctype",
+                    "name": "Tipo Contribuyente Proveedor",
+                    "description": _("Especificacion tipos de contribuyentes.")
+                },
 
 			]
 		},
