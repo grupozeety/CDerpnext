@@ -25,7 +25,13 @@ def get_data():
 					"type": "doctype",
 					"name": "Material Request",
 					"description": _("Requests for items."),
+				}, 
+				{
+					"type": "doctype",
+					"name": "Orden Trabajo",
+					"description": _("Ordenes de Trabajo"),
 				},
+					
 			]
 		},
 		{
