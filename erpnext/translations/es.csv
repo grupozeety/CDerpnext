@@ -562,7 +562,7 @@ DocType: Sales Order Item,Basic Rate (Company Currency),Precio base (Divisa por 
 DocType: Manufacturing Settings,Backflush Raw Materials Based On,Adquisición retroactiva de materia prima basada en
 apps/erpnext/erpnext/selling/doctype/quotation/quotation.py +57,Please enter item details,"Por favor, ingrese los detalles del producto"
 DocType: Purchase Receipt,Other Details,Otros detalles
-DocType: Account,Accounts,Cuentas
+DocType: Account,Accounts,Contabilidad
 apps/erpnext/erpnext/setup/setup_wizard/install_fixtures.py +67,Marketing,Marketing
 apps/erpnext/erpnext/accounts/doctype/payment_request/payment_request.py +223,Payment Entry is already created,Ya está creado Entrada Pago
 DocType: Features Setup,To track item in sales and purchase documents based on their serial nos. This is can also used to track warranty details of the product.,Para rastrear artículo en ventas y documentos de compra en base a sus nn serie. Esto se puede también utilizar para rastrear información sobre la garantía del producto.
@@ -3219,7 +3219,7 @@ apps/erpnext/erpnext/config/setup.py +14,Global Settings,Configuración global
 DocType: Employee Education,Employee Education,Educación del empleado
 apps/erpnext/erpnext/public/js/controllers/transaction.js +782,It is needed to fetch Item Details.,Se necesita a buscar Detalles del artículo.
 DocType: Salary Slip,Net Pay,Pago Neto
-DocType: Account,Account,Contabilidad
+DocType: Account,Account,Cuenta
 apps/erpnext/erpnext/stock/doctype/serial_no/serial_no.py +213,Serial No {0} has already been received,El número de serie {0} ya ha sido recibido
 ,Requested Items To Be Transferred,Artículos solicitados para ser transferidos
 DocType: Customer,Sales Team Details,Detalles del equipo de ventas.
