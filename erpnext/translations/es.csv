@@ -3219,7 +3219,7 @@ apps/erpnext/erpnext/config/setup.py +14,Global Settings,Configuración global
 DocType: Employee Education,Employee Education,Educación del empleado
 apps/erpnext/erpnext/public/js/controllers/transaction.js +782,It is needed to fetch Item Details.,Se necesita a buscar Detalles del artículo.
 DocType: Salary Slip,Net Pay,Pago Neto
-DocType: Account,Account,Cuenta
+DocType: Account,Account,Contabilidad
 apps/erpnext/erpnext/stock/doctype/serial_no/serial_no.py +213,Serial No {0} has already been received,El número de serie {0} ya ha sido recibido
 ,Requested Items To Be Transferred,Artículos solicitados para ser transferidos
 DocType: Customer,Sales Team Details,Detalles del equipo de ventas.
