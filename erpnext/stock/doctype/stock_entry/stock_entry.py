@@ -53,6 +53,7 @@ class StockEntry(StockController):
 
 	def on_submit(self):
 		self.update_stock_ledger()
+		self.updateProyeccion()
 
 		from erpnext.stock.doctype.serial_no.serial_no import update_serial_nos_after_submit
 		update_serial_nos_after_submit(self, "items")
@@ -484,7 +485,7 @@ class StockEntry(StockController):
 
 	def get_uom_details(self, args):
 		"""Returns dict `{"conversion_factor": [value], "transfer_qty": qty * [value]}`
-
+		
 		:param args: dict with `item_code`, `uom` and `qty`"""
 		conversion_factor = get_conversion_factor(args.get("item_code"), args.get("uom")).get("conversion_factor")
 
@@ -741,6 +742,18 @@ class StockEntry(StockController):
 					if expiry_date:
 						if getdate(self.posting_date) > getdate(expiry_date):
 							frappe.throw(_("Batch {0} of Item {1} has expired.").format(item.batch_no, item.item_code))
+							
+	def updateProyeccion(self):
+		if self.purpose=="Material Issue":
+		
+			for item in self.get("items"):
+				proyeccion=self.project
+				elemento=item.item_code
+				proyeccion_valor=get_proyeccion__valor(proyeccion, elemento)    
+				proyeccion_project = get_proyeccion_proyect(proyeccion, elemento)
+				qty_proyeccion = flt(proyeccion_valor) - flt(item.qty)
+				proyeccion_update = update_proyeccion(qty_proyeccion, proyeccion_project, elemento)
+				frappe.msgprint(_("Nuevo valor de Proyeccion para el item {0} igual a {1} ").format(item.item_code,qty_proyeccion))
 
 @frappe.whitelist()
 def get_production_order_details(production_order):
@@ -815,3 +828,42 @@ def get_warehouse_details(args):
 		}
 
 	return ret
+
+#Queries para ejecutar la actualizacion de proyeccion de materiales
+@frappe.whitelist()
+def get_proyeccion__valor(proyeccion, elemento):
+    
+    proyeccion_valor = frappe.db.sql("""select value
+                    from `tabProductos a Proyectar`
+                    join `tabProyectar` on `tabProyectar`.name =`tabProductos a Proyectar`.parent
+                    where `tabProductos a Proyectar`.item = %s
+                    AND `tabProyectar`.project=%s
+                    """,
+                        (elemento,proyeccion))[0][0]
+                        
+    return proyeccion_valor
+
+
+@frappe.whitelist()
+def get_proyeccion_proyect(proyeccion, elemento):
+    proyeccion_project = frappe.db.sql("""select `tabProductos a Proyectar`.parent 
+                    from `tabProductos a Proyectar`
+                    join `tabProyectar` on `tabProyectar`.name =`tabProductos a Proyectar`.parent
+                    where `tabProductos a Proyectar`.item = %s 
+                    AND `tabProyectar`.project=%s
+                        """,
+                            (elemento,proyeccion))[0][0]
+                            
+    return proyeccion_project
+
+@frappe.whitelist()
+def update_proyeccion(qty_proyeccion, proyeccion, elemento):
+    
+    proyeccion_update = frappe.db.sql("""update 
+                    `tabProductos a Proyectar` set value= %s
+                    where `tabProductos a Proyectar`.item = %s
+                    and `tabProductos a Proyectar`.parent= %s
+                        """,
+                            (qty_proyeccion, elemento,proyeccion))
+                            
+    return proyeccion_update
