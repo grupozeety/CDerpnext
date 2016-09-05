@@ -745,11 +745,11 @@ class StockEntry(StockController):
 							
 	def updateProyeccion(self):
 		if self.purpose=="Material Issue":
-		
 			for item in self.get("items"):
 				proyeccion=self.project
 				elemento=item.item_code
-				proyeccion_valor=get_proyeccion__valor(proyeccion, elemento)    
+				proyeccion_valor=get_proyeccion__valor(proyeccion, elemento)
+				
 				proyeccion_project = get_proyeccion_proyect(proyeccion, elemento)
 				qty_proyeccion = flt(proyeccion_valor) - flt(item.qty)
 				proyeccion_update = update_proyeccion(qty_proyeccion, proyeccion_project, elemento)
@@ -846,10 +846,12 @@ def get_proyeccion__valor(proyeccion, elemento):
 
 @frappe.whitelist()
 def get_proyeccion_proyect(proyeccion, elemento):
-    proyeccion_project = frappe.db.sql("""select `tabProductos a Proyectar`.parent 
+    proyeccion_project = frappe.db.sql("""select `tabProductos a Proyectar`.parent, adquisicion
                     from `tabProductos a Proyectar`
                     join `tabProyectar` on `tabProyectar`.name =`tabProductos a Proyectar`.parent
+                    join `tabItem` on `tabProductos a Proyectar`.item=`tabItem`.item_code
                     where `tabProductos a Proyectar`.item = %s 
+		    AND adquisicion=1 
                     AND `tabProyectar`.project=%s
                         """,
                             (elemento,proyeccion))[0][0]
