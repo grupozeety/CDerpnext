@@ -746,14 +746,16 @@ class StockEntry(StockController):
 	def updateProyeccion(self):
 		if self.purpose=="Material Issue":
 			for item in self.get("items"):
-				proyeccion=self.project
-				elemento=item.item_code
-				proyeccion_valor=get_proyeccion__valor(proyeccion, elemento)
+				adquisicion=get_adquisicion(item.item_code);
 				
-				proyeccion_project = get_proyeccion_proyect(proyeccion, elemento)
-				qty_proyeccion = flt(proyeccion_valor) - flt(item.qty)
-				proyeccion_update = update_proyeccion(qty_proyeccion, proyeccion_project, elemento)
-				frappe.msgprint(_("Nuevo valor de Proyeccion para el item {0} igual a {1} ").format(item.item_code,qty_proyeccion))
+				if adquisicion==1:
+					proyeccion=self.project
+					elemento=item.item_code
+					proyeccion_valor=get_proyeccion__valor(proyeccion, elemento)    
+					proyeccion_project = get_proyeccion_proyect(proyeccion, elemento)
+					qty_proyeccion = flt(proyeccion_valor) - flt(item.qty)
+					proyeccion_update = update_proyeccion(qty_proyeccion, proyeccion_project, elemento)
+					frappe.msgprint(_("Nuevo valor de Proyeccion para el item {0} igual a {1} ").format(item.item_code,qty_proyeccion))		
 
 @frappe.whitelist()
 def get_production_order_details(production_order):
@@ -857,6 +859,16 @@ def get_proyeccion_proyect(proyeccion, elemento):
                             (elemento,proyeccion))[0][0]
                             
     return proyeccion_project
+   
+@frappe.whitelist()
+def get_adquisicion(elemento):
+    adquisicion = frappe.db.sql("""select `tabItem`.adquisicion 
+                    from `tabItem` 
+                    where `tabItem`.item_code = %s 
+                        """,
+                            (elemento))[0][0]
+                            
+    return adquisicion
 
 @frappe.whitelist()
 def update_proyeccion(qty_proyeccion, proyeccion, elemento):
