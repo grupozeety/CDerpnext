@@ -182,6 +182,12 @@ def get_data():
 					"name": "Supplier Addresses and Contacts",
 					"doctype": "Supplier"
 				},
+				{
+					"type": "report",
+					"is_query_report": True,
+					"name": "Balance de Plan de Adquisiciones",
+					"doctype": "Proyectar"
+				},
 			]
 		},
 		{
