@@ -757,7 +757,7 @@ class StockEntry(StockController):
 					proyeccion_update = update_proyeccion(qty_proyeccion, proyeccion_project, elemento)
 					frappe.msgprint(_("Nuevo valor de Proyeccion para el item {0} igual a {1} ").format(item.item_code,qty_proyeccion))
 					
-		if self.purpose=="Material Receipt" and self.tipo_devolutivo==1 :
+		if self.purpose=="Material Receipt" and self.tipo_devolutivo==1:
 			for item in self.get("items"):
 				adquisicion=get_adquisicion(item.item_code);
 				
