@@ -754,8 +754,12 @@ class StockEntry(StockController):
 					proyeccion_valor=get_proyeccion__valor(proyeccion, elemento)    
 					proyeccion_project = get_proyeccion_proyect(proyeccion, elemento)
 					qty_proyeccion = flt(proyeccion_valor) - flt(item.qty)
-					proyeccion_update = update_proyeccion(item.qty,qty_proyeccion, proyeccion_project, elemento)
-					frappe.msgprint(_("Nuevo valor de Proyeccion para el item {0} igual a {1} ").format(item.item_code,qty_proyeccion))
+					
+					if (qty_proyeccion<0):
+						frappe.throw(_("No hay disponibilidad en la proyeccion para su solicitud del producto {0}").format(item.item_code))
+					else:
+						proyeccion_update = update_proyeccion(item.qty,qty_proyeccion, proyeccion_project, elemento)
+						frappe.msgprint(_("Nuevo valor de Proyeccion para el item {0} igual a {1} ").format(item.item_code,qty_proyeccion))
 					
 		if self.purpose=="Material Receipt" and self.tipo_devolutivo==1:
 			for item in self.get("items"):
