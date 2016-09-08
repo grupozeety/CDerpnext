@@ -754,7 +754,7 @@ class StockEntry(StockController):
 					proyeccion_valor=get_proyeccion__valor(proyeccion, elemento)    
 					proyeccion_project = get_proyeccion_proyect(proyeccion, elemento)
 					qty_proyeccion = flt(proyeccion_valor) - flt(item.qty)
-					proyeccion_update = update_proyeccion(qty_proyeccion, proyeccion_project, elemento)
+					proyeccion_update = update_proyeccion(item.qty,qty_proyeccion, proyeccion_project, elemento)
 					frappe.msgprint(_("Nuevo valor de Proyeccion para el item {0} igual a {1} ").format(item.item_code,qty_proyeccion))
 					
 		if self.purpose=="Material Receipt" and self.tipo_devolutivo==1:
@@ -882,14 +882,14 @@ def get_adquisicion(elemento):
     return adquisicion
 
 @frappe.whitelist()
-def update_proyeccion(qty_proyeccion, proyeccion, elemento):
+def update_proyeccion(qty, qty_proyeccion, proyeccion, elemento):
     
     proyeccion_update = frappe.db.sql("""update 
-                    `tabProductos a Proyectar` set value= %s
+                    `tabProductos a Proyectar` set value= %s, cantidad_salida=cantidad_salida + %s
                     where `tabProductos a Proyectar`.item = %s
                     and `tabProductos a Proyectar`.parent= %s
                         """,
-                            (qty_proyeccion, elemento,proyeccion))
+                            (qty_proyeccion,qty, elemento,proyeccion))
                             
     return proyeccion_update
  
