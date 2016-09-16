@@ -188,6 +188,12 @@ def get_data():
 					"name": "Balance de Plan de Adquisiciones",
 					"doctype": "Proyectar"
 				},
+				{
+					"type": "report",
+					"is_query_report": True,
+					"name": "Reporte Seguimiento de Compras",
+					"doctype": "Purchase Receipt"
+				},
 			]
 		},
 		{
