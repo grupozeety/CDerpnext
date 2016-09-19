@@ -28,6 +28,12 @@ def get_data():
 					"name": "Purchase Order",
 					"description": _("Purchase Orders given to Suppliers."),
 				},
+				{
+					"type": "doctype",
+					"name": "Registro de Contrato",
+					"description": _("Consulta y Registro de Contrato."),
+				},
+					
 			]
 		},
 		{
