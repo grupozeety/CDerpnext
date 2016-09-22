@@ -64,7 +64,7 @@ def get_data():
 				{
 					"type": "report",
 					"is_query_report": True,
-					"name": "Reporte Seguimiento de Compras",
+					"name": "Reporte Entradas por Recibido de Compra",
 					"doctype": "Purchase Receipt",
 				},
 				{
