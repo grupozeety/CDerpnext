@@ -61,6 +61,18 @@ def get_data():
 					"name": "Stock Ageing",
 					"doctype": "Item",
 				},
+				{
+					"type": "report",
+					"is_query_report": True,
+					"name": "Reporte Seguimiento de Compras",
+					"doctype": "Purchase Receipt",
+				},
+				{
+					"type": "report",
+					"name": "Item Shortage Report",
+					"route": "Report/Bin/Item Shortage Report",
+					"doctype": "Purchase Receipt"
+				},
 
 			]
 		},
@@ -248,12 +260,6 @@ def get_data():
 					"type": "report",
 					"is_query_report": True,
 					"name": "Purchase Order Items To Be Received",
-					"doctype": "Purchase Receipt"
-				},
-				{
-					"type": "report",
-					"name": "Item Shortage Report",
-					"route": "Report/Bin/Item Shortage Report",
 					"doctype": "Purchase Receipt"
 				},
 				{
