@@ -1,0 +1,19 @@
+{
+ "add_total_row": 0, 
+ "apply_user_permissions": 1, 
+ "creation": "2016-09-22 11:12:42.783891", 
+ "disabled": 0, 
+ "docstatus": 0, 
+ "doctype": "Report", 
+ "idx": 0, 
+ "is_standard": "Yes", 
+ "modified": "2016-09-22 11:13:00.537872", 
+ "modified_by": "Administrator", 
+ "module": "Stock", 
+ "name": "Reporte Entradas por Recibido de Compra", 
+ "owner": "Administrator", 
+ "query": "SELECT \n`tabPurchase Receipt Item`.parent as \"N\u00fam. Recibo::100\", \nDATE_FORMAT(`tabPurchase Receipt Item`.`creation`, '%%Y-%%m-%%d') as \"Fecha Recibo::100\",\n`tabPurchase Receipt`.`num_factura` as \"N\u00famero Factura/Remisi\u00f3n::200\",\n`tabPurchase Receipt`.`supplier_name` as \"Proveedor::100\",\n`tabPurchase Receipt Item`.`item_code` as \"Producto::150\",\n`tabPurchase Receipt Item`.`qty` as \"Cantidad::80\",\n`tabPurchase Receipt Item`.`rate` as \"Precio:Float:100\",\n`tabPurchase Receipt Item`.`amount` as \"Importe:Float:150\"\nFROM `tabPurchase Receipt Item` \nJOIN `tabPurchase Receipt` on `tabPurchase Receipt`.`name`=`tabPurchase Receipt Item`.`parent`  \nWHERE `tabPurchase Receipt`.`docstatus`!=2\nORDER BY `tabPurchase Receipt Item`.`parent` ASC,`tabPurchase Receipt Item`.`item_code` ASC", 
+ "ref_doctype": "Purchase Receipt", 
+ "report_name": "Reporte Entradas por Recibido de Compra", 
+ "report_type": "Query Report"
+}
