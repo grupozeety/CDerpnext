@@ -200,6 +200,14 @@ def get_data():
 					"name": "Reporte Seguimiento de Compras",
 					"doctype": "Purchase Receipt"
 				},
+                                {
+                                        "type": "report",
+                                        "is_query_report": True,
+                                        "label": _("Seguimiento Contratacion Plan de Compras"),
+                                        "name": "Seguimiento Plan de Compras",
+                                        "doctype": "Registro de Contrato"
+                                },
+
 			]
 		},
 		{
