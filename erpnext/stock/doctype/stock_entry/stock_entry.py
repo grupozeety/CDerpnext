@@ -744,6 +744,7 @@ class StockEntry(StockController):
 							frappe.throw(_("Batch {0} of Item {1} has expired.").format(item.batch_no, item.item_code))
 							
 	def updateProyeccion(self):
+		
 		if self.purpose=="Material Transfer" and self.tipo_devolutivo==0 and self.tipo_almacen!="Salida":
 			for item in self.get("items"):
 				adquisicion=get_adquisicion(item.item_code);
