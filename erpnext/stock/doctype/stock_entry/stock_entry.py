@@ -744,7 +744,8 @@ class StockEntry(StockController):
 							frappe.throw(_("Batch {0} of Item {1} has expired.").format(item.batch_no, item.item_code))
 							
 	def updateProyeccion(self):
-		if self.purpose=="Material Transfer" and self.tipo_devolutivo==0:
+		
+		if self.purpose=="Material Transfer" and self.tipo_devolutivo==0 and self.tipo_almacen=="Salida":
 			for item in self.get("items"):
 				adquisicion=get_adquisicion(item.item_code);
 				
@@ -761,7 +762,7 @@ class StockEntry(StockController):
 						proyeccion_update = update_proyeccion(item.qty,qty_proyeccion, proyeccion_project, elemento)
 						frappe.msgprint(_("Nuevo valor de Proyeccion para el item {0} igual a {1} ").format(item.item_code,qty_proyeccion))
 					
-		if self.purpose=="Material Transfer" and self.tipo_devolutivo==1:
+		if self.purpose=="Material Transfer" and self.tipo_devolutivo==1 and self.tipo_almacen=="Salida":
 			for item in self.get("items"):
 				adquisicion=get_adquisicion(item.item_code);
 				
@@ -770,7 +771,6 @@ class StockEntry(StockController):
 					elemento=item.item_code
 					devolucion=update_devolucion(item.qty, proyeccion, elemento)
 					frappe.msgprint(_("Reporte de devoluciones actualizado. "))
-			
 
 @frappe.whitelist()
 def get_production_order_details(production_order):
