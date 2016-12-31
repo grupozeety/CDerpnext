@@ -745,7 +745,7 @@ class StockEntry(StockController):
 							
 	def updateProyeccion(self):
 		
-		if self.purpose=="Material Transfer" and self.tipo_devolutivo==0 and self.tipo_almacen=="Salida":
+		if self.purpose=="Material Transfer":
 			for item in self.get("items"):
 				adquisicion=get_adquisicion(item.item_code);
 				
@@ -761,8 +761,22 @@ class StockEntry(StockController):
 					else:
 						proyeccion_update = update_proyeccion(item.qty,qty_proyeccion, proyeccion_project, elemento)
 						frappe.msgprint(_("Nuevo valor de Proyeccion para el item {0} igual a {1} ").format(item.item_code,qty_proyeccion))
+		
+		if self.purpose=="Material Issue":
+			for item in self.get("items"):
+				adquisicion=get_adquisicion(item.item_code);
+				
+				if adquisicion==1:
+					proyeccion=self.project
+					elemento=item.item_code
+					proyeccion_valor=get_proyeccion__valor(proyeccion, elemento)    
+					proyeccion_project = get_proyeccion_proyect(proyeccion, elemento)
+					qty_proyeccion = flt(proyeccion_valor) - flt(item.qty)
+				
+					salida_update = update_salida(item.qty,qty_proyeccion, proyeccion_project, elemento)
+					frappe.msgprint(_("Nuevo valor de Salida para el item {0} igual a {1} ").format(item.item_code,qty_proyeccion))
 					
-		if self.purpose=="Material Transfer" and self.tipo_devolutivo==1 and self.tipo_almacen=="Salida":
+		if self.purpose=="Material Receipt":
 			for item in self.get("items"):
 				adquisicion=get_adquisicion(item.item_code);
 				
@@ -889,11 +903,23 @@ def get_adquisicion(elemento):
 def update_proyeccion(qty, qty_proyeccion, proyeccion, elemento):
     
     proyeccion_update = frappe.db.sql("""update 
-                    `tabProductos a Proyectar` set value= %s, cantidad_salida=cantidad_salida + %s
+                    `tabProductos a Proyectar` set value= %s
                     where `tabProductos a Proyectar`.item = %s
                     and `tabProductos a Proyectar`.parent= %s
                         """,
-                            (qty_proyeccion,qty, elemento,proyeccion))
+                            (qty_proyeccion, elemento,proyeccion))
+                            
+    return proyeccion_update
+
+@frappe.whitelist()
+def update_salida(qty, qty_proyeccion, proyeccion, elemento):
+    
+    proyeccion_update = frappe.db.sql("""update 
+                    `tabProductos a Proyectar` set cantidad_salida=cantidad_salida + %s
+                    where `tabProductos a Proyectar`.item = %s
+                    and `tabProductos a Proyectar`.parent= %s
+                        """,
+                            (qty, elemento,proyeccion))
                             
     return proyeccion_update
  
@@ -901,7 +927,7 @@ def update_proyeccion(qty, qty_proyeccion, proyeccion, elemento):
 def update_devolucion(qty,proyeccion, elemento):
 	
 	devolucion_update= frappe.db.sql("""update 
-                    `tabProductos a Proyectar` set cantidad_devolucion= cantidad_devolucion + %s
+                    `tabProductos a Proyectar` set cantidad_devolucion= cantidad_devolucion + %s 
                     where `tabProductos a Proyectar`.item = %s
                     and `tabProductos a Proyectar`.parent= %s
                         """,
