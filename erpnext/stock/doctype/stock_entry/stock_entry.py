@@ -62,10 +62,11 @@ class StockEntry(StockController):
 		self.make_gl_entries()
 
 	def on_cancel(self):
+		self.rollbackproyeccion()
 		self.update_stock_ledger()
 		self.update_production_order()
 		self.make_gl_entries_on_cancel()
-
+	
 	def validate_purpose(self):
 		valid_purposes = ["Material Issue", "Material Receipt", "Material Transfer", "Material Transfer for Manufacture",
 			"Manufacture", "Repack", "Subcontract"]
@@ -785,7 +786,48 @@ class StockEntry(StockController):
 					elemento=item.item_code
 					devolucion=update_devolucion(item.qty, proyeccion, elemento)
 					frappe.msgprint(_("Reporte de devoluciones actualizado. "))
+					
+	def rollbackproyeccion(self):
 
+		if self.purpose=="Material Transfer":
+			for item in self.get("items"):
+				adquisicion=get_adquisicion(item.item_code);
+				
+				if adquisicion==1:
+					proyeccion=self.project
+					elemento=item.item_code
+					proyeccion_valor=get_proyeccion__valor(proyeccion, elemento)    
+					proyeccion_project = get_proyeccion_proyect(proyeccion, elemento)
+					qty_proyeccion = flt(proyeccion_valor) + flt(item.qty)
+
+					proyeccion_update = back_proyeccion(item.qty,qty_proyeccion, proyeccion_project, elemento)
+					frappe.msgprint(_("Nuevo valor de Proyeccion para el item {0} igual a {1} ").format(item.item_code,qty_proyeccion))
+		
+		if self.purpose=="Material Issue":
+			for item in self.get("items"):
+				adquisicion=get_adquisicion(item.item_code);
+				
+				if adquisicion==1:
+					proyeccion=self.project
+					elemento=item.item_code
+					proyeccion_valor=get_proyeccion__valor(proyeccion, elemento)    
+					proyeccion_project = get_proyeccion_proyect(proyeccion, elemento)
+					qty_proyeccion = flt(proyeccion_valor) + flt(item.qty)
+				
+					salida_update = back_salida(item.qty,qty_proyeccion, proyeccion_project, elemento)
+					frappe.msgprint(_("Nuevo valor de Salida para el item {0} igual a {1} ").format(item.item_code,qty_proyeccion))
+					
+		if self.purpose=="Material Receipt":
+			for item in self.get("items"):
+				adquisicion=get_adquisicion(item.item_code);
+				
+				if adquisicion==1:
+					proyeccion=self.project
+					elemento=item.item_code
+					devolucion=back_devolucion(item.qty, proyeccion, elemento)
+					frappe.msgprint(_("Reporte de devoluciones actualizado. "))
+					
+		
 @frappe.whitelist()
 def get_production_order_details(production_order):
 	production_order = frappe.get_doc("Production Order", production_order)
@@ -922,10 +964,34 @@ def update_proyeccion(qty, qty_proyeccion, proyeccion, elemento):
     return proyeccion_update
 
 @frappe.whitelist()
+def back_proyeccion(qty, qty_proyeccion, proyeccion, elemento):
+    
+    proyeccion_update = frappe.db.sql("""update 
+                    `tabProductos a Proyectar` set value= %s
+                    where `tabProductos a Proyectar`.item = %s
+                    and `tabProductos a Proyectar`.parent= %s
+                        """,
+                            (qty_proyeccion, elemento,proyeccion))
+                            
+    return proyeccion_update
+
+@frappe.whitelist()
 def update_salida(qty, qty_proyeccion, proyeccion, elemento):
     
     proyeccion_update = frappe.db.sql("""update 
                     `tabProductos a Proyectar` set cantidad_salida=cantidad_salida + %s
+                    where `tabProductos a Proyectar`.item = %s
+                    and `tabProductos a Proyectar`.parent= %s
+                        """,
+                            (qty, elemento,proyeccion))
+                            
+    return proyeccion_update
+   
+@frappe.whitelist()
+def back_salida(qty, qty_proyeccion, proyeccion, elemento):
+    
+    proyeccion_update = frappe.db.sql("""update 
+                    `tabProductos a Proyectar` set cantidad_salida=cantidad_salida - %s
                     where `tabProductos a Proyectar`.item = %s
                     and `tabProductos a Proyectar`.parent= %s
                         """,
@@ -938,6 +1004,18 @@ def update_devolucion(qty,proyeccion, elemento):
 	
 	devolucion_update= frappe.db.sql("""update 
                     `tabProductos a Proyectar` set cantidad_devolucion= cantidad_devolucion + %s 
+                    where `tabProductos a Proyectar`.item = %s
+                    and `tabProductos a Proyectar`.parent= %s
+                        """,
+                            (qty, elemento,proyeccion))
+	
+	return devolucion_update
+
+@frappe.whitelist()
+def back_devolucion(qty,proyeccion, elemento):
+	
+	devolucion_update= frappe.db.sql("""update 
+                    `tabProductos a Proyectar` set cantidad_devolucion= cantidad_devolucion - %s 
                     where `tabProductos a Proyectar`.item = %s
                     and `tabProductos a Proyectar`.parent= %s
                         """,
