@@ -870,8 +870,13 @@ def get_proyeccion__valor(proyeccion, elemento):
                     where `tabProductos a Proyectar`.item = %s
                     AND `tabProyectar`.project=%s
                     """,
-                        (elemento,proyeccion))[0][0]
-                        
+                        (elemento,proyeccion))
+    
+    if not proyeccion_valor:
+		frappe.throw(_("El elemento {0} no posee proyeccion en el proyecto {1}.").format(elemento,proyeccion))
+	
+    proyeccion_valor=proyeccion_valor[0][0]
+                
     return proyeccion_valor
 
 
@@ -895,8 +900,13 @@ def get_adquisicion(elemento):
                     from `tabItem` 
                     where `tabItem`.item_code = %s 
                         """,
-                            (elemento))[0][0]
+                            (elemento))
                             
+    if not adquisicion:
+    	frappe.throw(_("El elemento {0} no posee proyeccion en el proyecto.").format(elemento))
+    
+    adquisicion=adquisicion[0][0]
+                           
     return adquisicion
 
 @frappe.whitelist()
